@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import {Box} from "./common";
+import {Box, Divider} from "./common";
 
 
 const Wrapper = styled.div`
@@ -22,15 +22,10 @@ const Path = styled.span`font-size: 25px;
   color: violet;
   margin-left: 15px;
 `
-const Divider = styled.div`border-bottom: 1px solid lightgrey; margin-top: 10px`
+
 
 const Breadcrumbs = styled.span`font-size: 15px; color: violet`
 
-const Tab = styled.div`
-  padding: 10px 20px;
-  border-bottom: 4px solid;
-  border-color: ${props => props.active ? "violet" : "transparent"  };
-`
 
 
 
@@ -45,12 +40,6 @@ const HeaderComponent = () => {
                 <Breadcrumbs>All Apis > mobile-api.dnssf.com > V1/balance/history</Breadcrumbs>
             </Row>
             <Divider/>
-            <Box mt={"30px"}>
-                <Row>
-                <Tab active={true}>Request</Tab>
-                <Tab>Response</Tab>
-                </Row>
-            </Box>
         </Wrapper>
     );
 };

@@ -1,9 +1,10 @@
-import React from 'react';
-import HeaderComponent from "../components/Header.component";
+import React, {useState} from 'react';
+import HeaderComponent, {Row} from "../components/Header.component";
 import {createGlobalStyle, ThemeProvider} from "styled-components";
 import SearchBarComponent from "../components/SearchBar.component";
-import {Box} from "../components/common";
+import {Box, Tab} from "../components/common";
 import TableComponent from "../components/Table.component";
+import dataJson from "../fe_data.json"
 
 const GlobalStyle = createGlobalStyle`
   
@@ -36,17 +37,40 @@ const GlobalStyle = createGlobalStyle`
 const theme = {
     primary: "#6a1c9a",
     secondary: "#ca90d5",
-    primaryText: "#777778",
     tertiary: "#122a6d",
-    background: "#f0f0f0"
+    background: "#f0f0f0",
+    quaternary: "#cee5ec",
+    quaternaryText: "#4a9fbb",
+    primaryText: "#777778",
 };
+
+const TabEnum = {
+    "request": "request",
+    "response": "response"
+}
 
 
 const MainPage = () => {
+
+    const [data, setData] = useState(dataJson)
+    const [activeTab, setActiveTab] = useState(TabEnum.request)
+
+    const onTabChange = (tab) => {
+        setActiveTab(tab)
+    }
+
+
     return (
         <ThemeProvider theme={theme}>
             <GlobalStyle/>
             <HeaderComponent/>
+            <Box mt={"30px"}>
+                <Row>
+                    <Tab onClick={() => {onTabChange(TabEnum.request)}} active={activeTab === TabEnum.request}>Request</Tab>
+                    <Tab onClick={() => {onTabChange(TabEnum.response)}} active={activeTab === TabEnum.response}>Response</Tab>
+                </Row>
+            </Box>
+
             <Box mt={"30px"} mb={"30px"} ml={"15px"} mr={"15px"}>
                 <SearchBarComponent/>
             </Box>

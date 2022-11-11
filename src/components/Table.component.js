@@ -1,46 +1,53 @@
-import React, {useState} from "react";
-import { Box } from "./common";
-import styled from "styled-components";
-import dataJson from "../fe_data.json"
+import React, { useState } from "react";
+import {Box, Divider, Masked, Pii, Type} from "./common";
+import styled, { useTheme } from "styled-components";
+import dataJson from "../fe_data.json";
+import { HiPlay } from "react-icons/hi2";
 
-console.log(dataJson)
+console.log(dataJson);
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 200px 200px 1fr;
   grid-template-rows: auto;
-  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
   background-color: white;
   height: 70px;
   margin-top: 10px;
   align-items: center;
 `;
 
-const Header = styled.div`
+const ColumnHeader = styled.div`
   display: grid;
   grid-template-columns: 1fr 200px 200px 1fr;
   grid-template-rows: auto;
+  height: 30px;
+  background-color: white;
+  align-items: center;
+  padding: 20px;
 `;
 
-const GridInternal = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 200px 200px 1fr;
-  grid-template-rows: auto;
-`
-
 const BoxShadow = styled(Box)`
-  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
   background-color: white;
-  padding: 20px;
-`
+`;
 
 const BoxCollapse = styled(Box)`
   overflow: hidden;
-  transition: .5s ease-in-out;
-  max-height : ${props => props.in ? "1000px" : "0px" }; //transition does not work with auto
-`
+  padding: 3px;
+  transition: 0.4s ease-in-out;
+  max-height: ${(props) =>
+    props.in ? "1000px" : "0px"}; //transition does not work with auto
+`;
 
-
+const ColumnName = styled(Box)`
+  color: ${(props) => props.theme.primary};
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 15px;
+`;
 
 const columns = [
   {
@@ -48,7 +55,7 @@ const columns = [
     name: "name",
     dataKey: "name",
     cellRenderer: (data) => {
-      return <span>{data}</span>
+      return <Box ml={"20px"}>{data}</Box>;
     },
   },
   {
@@ -56,7 +63,7 @@ const columns = [
     name: "pii",
     dataKey: "pii",
     cellRenderer: (data) => {
-      return <span>{data.toString()}</span>
+      return <Pii present={data}>PII</Pii>;
     },
   },
   {
@@ -64,7 +71,7 @@ const columns = [
     name: "masked",
     dataKey: "masked",
     cellRenderer: (data) => {
-      return <span>{data.toString()}</span>
+        return <Masked present={data}>MASKED</Masked>;
     },
   },
   {
@@ -72,58 +79,97 @@ const columns = [
     name: "type",
     dataKey: "type",
     cellRenderer: (data) => {
-      return <span>{data}</span>
+      return <Type>{data}</Type>;
     },
   },
 ];
 
-const TableComponent = () => {
-
-
-
+const TableComponent = ({data, columnsConst}) => {
   return (
-      <>
-      <Header>
-        {columns.map(c => <div>{c.name}</div>)}
-      </Header>
-        <BoxShadow>
-          <CollapseSection title={"URL parameters"} data={dataJson.request.urlParams}/>
-          <CollapseSection title={"Query parameters"} data={dataJson.request.queryParams}/>
-          <CollapseSection title={"Headers parameters"} data={dataJson.request.headers}/>
-          <CollapseSection title={"Body parameters"} data={dataJson.request.body}/>
-        </BoxShadow>
-      </>
+    <>
+      <BoxShadow>
+        <ColumnHeader>
+          {columns.map((c) => (
+            <ColumnName>{c.name}</ColumnName>
+          ))}
+        </ColumnHeader>
+        <Divider />
+        <CollapseSection
+          title={"URL parameters"}
+          data={dataJson.request.urlParams}
+        />
+        <CollapseSection
+          title={"Query parameters"}
+          data={dataJson.request.queryParams}
+        />
+        <CollapseSection
+          title={"Headers parameters"}
+          data={dataJson.request.headers}
+        />
+        <CollapseSection
+          title={"Body parameters"}
+          data={dataJson.request.body}
+        />
+      </BoxShadow>
+    </>
   );
 };
 
 export default TableComponent;
 
-
-
-function subTable(data){
-
-  return <>
-    {data.map((rowData) => {
-      // console.log({d: rowData})
-      // console.log(Object.keys(rowData))
-      return <Grid>{Object.keys(rowData).map((columnKey => getCellRenderer(columnKey)(rowData[columnKey])))}</Grid>
-    })}
-  </>
+function subTable(data) {
+  return (
+    <>
+      {data.map((rowData) => {
+        // console.log({d: rowData})
+        // console.log(Object.keys(rowData))
+        return (
+          <Grid>
+            {Object.keys(rowData).map((columnKey) =>
+              getCellRenderer(columnKey)(rowData[columnKey])
+            )}
+          </Grid>
+        );
+      })}
+    </>
+  );
 }
 
-
-function getCellRenderer(name){
-  console.log({name})
-  return columns.find(c => c.dataKey === name).cellRenderer
+function getCellRenderer(name) {
+  return columns.find((c) => c.dataKey === name).cellRenderer;
 }
 
-function CollapseSection({data, title}){
-  const [open, setOpen] = useState(true)
+function CollapseSection({ data, title }) {
+  const [open, setOpen] = useState(true);
+  const theme = useTheme();
 
   const onClickHandler = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
 
-  return <><span onClick={onClickHandler}>{title}</span>
-  <BoxCollapse in={open}>{subTable(data)}</BoxCollapse></>
+  return (
+    <Box style={{ padding: "10px 20px" }}>
+        <Box style={{display: "flex", alignItems: "center", cursor: "pointer"}}><Box
+            style={{
+                backgroundColor: theme.background,
+                height: "15px",
+                width: "15px",
+                display: "grid",
+                placeItems: "center",
+                borderRadius: "10px",
+            }}
+        >
+            <HiPlay
+                style={{
+                    fontSize: "8px",
+                    color: "#6a1c9a",
+                    transform: open ? "rotate(90deg)" : "none",
+                    transition: "0.2s ease-in-out",
+                }}
+            />
+        </Box>
+            <span style={{marginLeft: "10px"}} onClick={onClickHandler}>{title}</span></Box>
+      <BoxCollapse in={open}>{subTable(data)}</BoxCollapse>
+    </Box>
+  );
 }
