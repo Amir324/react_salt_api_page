@@ -85,6 +85,7 @@ const columns = [
 ];
 
 const TableComponent = ({data, columnsConst}) => {
+    console.log("TableComponents", data)
   return (
     <>
       <BoxShadow>
@@ -96,19 +97,19 @@ const TableComponent = ({data, columnsConst}) => {
         <Divider />
         <CollapseSection
           title={"URL parameters"}
-          data={dataJson.request.urlParams}
+          data={data?.urlParams || []}
         />
         <CollapseSection
           title={"Query parameters"}
-          data={dataJson.request.queryParams}
+          data={data.queryParams || []}
         />
         <CollapseSection
           title={"Headers parameters"}
-          data={dataJson.request.headers}
+          data={data.headers || []}
         />
         <CollapseSection
           title={"Body parameters"}
-          data={dataJson.request.body}
+          data={data.body || []}
         />
       </BoxShadow>
     </>

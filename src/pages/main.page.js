@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import HeaderComponent, {Row} from "../components/Header.component";
 import {createGlobalStyle, ThemeProvider} from "styled-components";
 import SearchBarComponent from "../components/SearchBar.component";
 import {Box, Tab} from "../components/common";
 import TableComponent from "../components/Table.component";
 import dataJson from "../fe_data.json"
+import debounce from "lodash/debounce"
+import {genericFilter, genericSearch} from "../utils";
 
 const GlobalStyle = createGlobalStyle`
   
@@ -52,11 +54,52 @@ const TabEnum = {
 
 const MainPage = () => {
 
-    const [data, setData] = useState(dataJson)
     const [activeTab, setActiveTab] = useState(TabEnum.request)
+    const [data, setData] = useState(dataJson[activeTab])
+    const [search, setSearch] = useState("")
+    const [filter, setFilter] = useState([]) //[{property: "", isTruthyPicked: bool}]
+
+
+    useEffect(()=>{
+        setData(getResult())
+    }, [activeTab])
+
+
 
     const onTabChange = (tab) => {
         setActiveTab(tab)
+    }
+
+    const onSearch = (e) => {
+        setSearch(e.target.value)
+    }
+
+
+
+
+    const getResult = () => {
+        const result = {}
+        for (const key in dataJson[activeTab]){
+            result[key] = dataJson[activeTab][key].filter(d => {
+                return genericFilter(d, filter)
+            }).filter(d => {
+                return genericSearch(d, ["name", "type"], search)
+            })
+        }
+        console.log({result})
+        return result
+    }
+
+    const onPiiFilter = (e) => {
+        setFilter([{property: "pii", isTruthyPicked: e.target.checked}])
+    }
+
+    const onApply = () => {
+        setData(getResult())
+    }
+
+    const onReset =() => {
+        setData(dataJson)
     }
 
 
@@ -72,10 +115,10 @@ const MainPage = () => {
             </Box>
 
             <Box mt={"30px"} mb={"30px"} ml={"15px"} mr={"15px"}>
-                <SearchBarComponent/>
+                <SearchBarComponent onSearch={onSearch} onFilter={onPiiFilter} onApply={onApply}/>
             </Box>
             <Box mt={"30px"} mb={"30px"} ml={"15px"} mr={"15px"}>
-                <TableComponent/>
+                <TableComponent data={data}/>
             </Box>
             
         </ThemeProvider>

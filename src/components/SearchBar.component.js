@@ -32,20 +32,20 @@ const VerticalDivider = styled.hr`
   margin: 8px 0px;
 `;
 
-const SearchBarComponent = () => {
+const SearchBarComponent = ({onSearch, onFilter, onApply}) => {
   return (
 
       <Row style={{ background: "white" }}>
         <Box ml={"15px"} mr={"15px"}>
           <FaSearch />
         </Box>
-        <Input type="text" placeholder={"Search"} />
+        <Input type="text" placeholder={"Search"} onChange={onSearch} />
         <VerticalDivider/>
         <Box ml={"20px"} mr={"20px"} style={{display: "flex"}}>
-          <input id={"checkbox"} type={"checkbox"} />
+          <input id={"checkbox"} type={"checkbox"} onChange={onFilter} />
           <Box ml={"5px"}><label htmlFor={"checkbox"}>Show PII only</label></Box>
         </Box>
-        <Button>Apply</Button>
+        <Button onClick={onApply}>Apply</Button>
       </Row>
   );
 };
