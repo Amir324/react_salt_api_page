@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Box, Divider, Row} from "./common";
+import { Box, Divider, Row } from "./common";
 import { BoxShadow } from "./Table.component";
 
 const Wrapper = styled(BoxShadow)`

@@ -1,4 +1,4 @@
-import {createGlobalStyle} from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   
@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: ${props => props.theme.background};
+    background-color: ${(props) => props.theme.background};
   }
   
   button {
@@ -26,14 +26,14 @@ export const GlobalStyle = createGlobalStyle`
     cursor: pointer;
     outline: inherit;
   }
-`
+`;
 
 export const theme = {
-    primary: "#6a1c9a",
-    secondary: "#ca90d5",
-    tertiary: "#122a6d",
-    background: "#f0f0f0",
-    quaternary: "#cee5ec",
-    quaternaryText: "#4a9fbb",
-    primaryText: "#777778",
+  primary: "#6a1c9a",
+  secondary: "#ca90d5",
+  tertiary: "#122a6d",
+  background: "#f0f0f0",
+  quaternary: "#cee5ec",
+  quaternaryText: "#4a9fbb",
+  primaryText: "#777778",
 };
