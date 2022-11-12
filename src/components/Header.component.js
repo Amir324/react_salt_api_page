@@ -38,7 +38,7 @@ const HeaderComponent = ({ children, method, path, api }) => {
       </Row>
       <Row mt={"20px"} mb={"20px"}>
         <Breadcrumbs>
-          All Apis > {api} > {path}
+          All APIs > {api} > {path}
         </Breadcrumbs>
       </Row>
       <Divider />

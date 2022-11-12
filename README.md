@@ -1,4 +1,10 @@
+
+Deployed: [https://react-salt-api-page.vercel.app/](https://react-salt-api-page.vercel.app/).
+
+![Screenshot](screenshot.png)
+
 # Getting Started with Create React App
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
