@@ -25,12 +25,14 @@ export const Masked = styled(BaseBadge)`
   border: ${props => "1px solid " + props.theme.primary};
   color: ${props => props.present ? "white" : props.theme.primary};
   background-color: ${props => props.present ? props.theme.primary: "white" };
+  cursor: pointer;
 `
 
 export const Pii = styled(BaseBadge)`
   border: ${props => "1px solid " + props.theme.tertiary};
   color: ${props => props.present ? "white" : props.theme.tertiary};
   background-color: ${props => props.present ? props.theme.tertiary: "white" };
+  cursor: pointer;
 `
 
 export const Type = styled(BaseBadge)`
@@ -41,7 +43,10 @@ export const Type = styled(BaseBadge)`
 `
 
 export const Tab = styled.div`
-  padding: 10px 20px;
+  padding: 10px 30px;
   border-bottom: 4px solid;
-  border-color: ${props => props.active ? "violet" : "transparent"  };
+  font-weight: 800;
+  color: ${(props) => props.theme.primary} ;
+  border-color: ${props => props.active ? props.theme.primary : "transparent"  };
+  cursor: pointer;
 `

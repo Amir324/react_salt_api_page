@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    font-family: 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -56,13 +56,19 @@ const MainPage = () => {
 
     const [activeTab, setActiveTab] = useState(TabEnum.request)
     const [data, setData] = useState(dataJson[activeTab])
+    const [metaData, setMetadata] = useState({})
+
     const [search, setSearch] = useState("")
     const [filter, setFilter] = useState([]) //[{property: "", isTruthyPicked: bool}]
 
 
     useEffect(()=>{
-        setData(getResult())
+        setData(getResult(search, filter))
     }, [activeTab])
+
+    useEffect(() => {
+        setMetadata(getMetadata())
+    },[])
 
 
 
@@ -75,9 +81,16 @@ const MainPage = () => {
     }
 
 
+    const getMetadata = () => {
+        return {
+            api: dataJson.api,
+            path: dataJson.path,
+            method: dataJson.method
+        }
+    }
 
 
-    const getResult = () => {
+    const getResult = (search, filter) => {
         const result = {}
         for (const key in dataJson[activeTab]){
             result[key] = dataJson[activeTab][key].filter(d => {
@@ -95,30 +108,49 @@ const MainPage = () => {
     }
 
     const onApply = () => {
-        setData(getResult())
+        setData(getResult(search, filter))
     }
 
-    const onReset =() => {
-        setData(dataJson)
+    const onReset = () => {
+        setFilter([])
+        setSearch("")
+        setData(getResult("",[]))
+    }
+
+    const onBadgeClick = (dataSectionName) => {
+
+        return (value, index, rowData, field) => {
+            const result =  getResult(search, filter)
+            result[dataSectionName].forEach((item) => {
+                if(item.name === rowData.name){
+                    item[field] = !item[field]
+                }
+            })
+
+            setData(result)
+        }
+
     }
 
 
     return (
         <ThemeProvider theme={theme}>
             <GlobalStyle/>
-            <HeaderComponent/>
-            <Box mt={"30px"}>
-                <Row>
-                    <Tab onClick={() => {onTabChange(TabEnum.request)}} active={activeTab === TabEnum.request}>Request</Tab>
-                    <Tab onClick={() => {onTabChange(TabEnum.response)}} active={activeTab === TabEnum.response}>Response</Tab>
-                </Row>
-            </Box>
+            <HeaderComponent api={metaData?.api} method={metaData?.method} path={metaData?.path}>
+                <Box mt={"30px"}>
+                    <Row>
+                        <Tab onClick={() => {onTabChange(TabEnum.request)}} active={activeTab === TabEnum.request}>Request</Tab>
+                        <Tab onClick={() => {onTabChange(TabEnum.response)}} active={activeTab === TabEnum.response}>Response</Tab>
+                    </Row>
+                </Box>
+            </HeaderComponent>
+
 
             <Box mt={"30px"} mb={"30px"} ml={"15px"} mr={"15px"}>
-                <SearchBarComponent onSearch={onSearch} onFilter={onPiiFilter} onApply={onApply}/>
+                <SearchBarComponent filter={filter} search={search} onSearch={onSearch} onFilter={onPiiFilter} onApply={onApply} onReset={onReset}/>
             </Box>
             <Box mt={"30px"} mb={"30px"} ml={"15px"} mr={"15px"}>
-                <TableComponent data={data}/>
+                <TableComponent data={data} onClick={onBadgeClick}/>
             </Box>
             
         </ThemeProvider>

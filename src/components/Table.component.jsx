@@ -6,10 +6,15 @@ import { HiPlay } from "react-icons/hi2";
 
 console.log(dataJson);
 
-const Grid = styled.div`
+
+const BaseGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 200px 200px 1fr;
+  grid-template-columns: 1fr 100px 1fr 200px;
   grid-template-rows: auto;
+`
+
+const Grid = styled(BaseGrid)`
+
   box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
     0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
   background-color: white;
@@ -18,17 +23,14 @@ const Grid = styled.div`
   align-items: center;
 `;
 
-const ColumnHeader = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 200px 200px 1fr;
-  grid-template-rows: auto;
+const ColumnHeader = styled(BaseGrid)`
   height: 30px;
   background-color: white;
   align-items: center;
   padding: 20px;
 `;
 
-const BoxShadow = styled(Box)`
+export const BoxShadow = styled(Box)`
   box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
     0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
   background-color: white;
@@ -39,7 +41,7 @@ const BoxCollapse = styled(Box)`
   padding: 3px;
   transition: 0.4s ease-in-out;
   max-height: ${(props) =>
-    props.in ? "1000px" : "0px"}; //transition does not work with auto
+    props.in ? "1000px" : "0px"};
 `;
 
 const ColumnName = styled(Box)`
@@ -62,17 +64,20 @@ const columns = [
     key: 2,
     name: "pii",
     dataKey: "pii",
-    cellRenderer: (data) => {
-      return <Pii present={data}>PII</Pii>;
+    cellRenderer: (data, index, onClick, rowData) => {
+      return <Pii present={data} onClick={() => onClick(data, index, rowData, "pii")}>PII</Pii>;
     },
   },
   {
     key: 3,
     name: "masked",
     dataKey: "masked",
-    cellRenderer: (data) => {
-        return <Masked present={data}>MASKED</Masked>;
-    },
+    // cellRenderer: (data) => {
+    //     return <Masked present={data}>MASKED</Masked>;
+    // },
+      cellRenderer: (data, index, onClick, rowData) => {
+          return <Masked present={data} onClick={() => onClick(data, index, rowData, "masked")}>MASKED</Masked>;
+      },
   },
   {
     key: 4,
@@ -84,8 +89,7 @@ const columns = [
   },
 ];
 
-const TableComponent = ({data, columnsConst}) => {
-    console.log("TableComponents", data)
+const TableComponent = ({data, onClick}) => {
   return (
     <>
       <BoxShadow>
@@ -98,18 +102,22 @@ const TableComponent = ({data, columnsConst}) => {
         <CollapseSection
           title={"URL parameters"}
           data={data?.urlParams || []}
+          onClick={onClick("urlParams")}
         />
         <CollapseSection
           title={"Query parameters"}
           data={data.queryParams || []}
+          onClick={onClick("queryParams")}
         />
         <CollapseSection
           title={"Headers parameters"}
           data={data.headers || []}
+          onClick={onClick("headers")}
         />
         <CollapseSection
           title={"Body parameters"}
           data={data.body || []}
+          onClick={onClick("body")}
         />
       </BoxShadow>
     </>
@@ -118,16 +126,16 @@ const TableComponent = ({data, columnsConst}) => {
 
 export default TableComponent;
 
-function subTable(data) {
+function subTable(data, onClick) {
   return (
     <>
-      {data.map((rowData) => {
+      {data.map((rowData, index) => {
         // console.log({d: rowData})
         // console.log(Object.keys(rowData))
         return (
           <Grid>
             {Object.keys(rowData).map((columnKey) =>
-              getCellRenderer(columnKey)(rowData[columnKey])
+              getCellRenderer(columnKey)(rowData[columnKey], index, onClick, rowData)
             )}
           </Grid>
         );
@@ -140,7 +148,7 @@ function getCellRenderer(name) {
   return columns.find((c) => c.dataKey === name).cellRenderer;
 }
 
-function CollapseSection({ data, title }) {
+function CollapseSection({ data, title, onClick }) {
   const [open, setOpen] = useState(true);
   const theme = useTheme();
 
@@ -170,7 +178,7 @@ function CollapseSection({ data, title }) {
             />
         </Box>
             <span style={{marginLeft: "10px"}} onClick={onClickHandler}>{title}</span></Box>
-      <BoxCollapse in={open}>{subTable(data)}</BoxCollapse>
+      <BoxCollapse in={open}>{subTable(data, onClick)}</BoxCollapse>
     </Box>
   );
 }
