@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import {Box, Divider, Masked, Pii, Type} from "./common";
 import styled, { useTheme } from "styled-components";
-import dataJson from "../fe_data.json";
 import { HiPlay } from "react-icons/hi2";
-
-console.log(dataJson);
 
 
 const BaseGrid = styled.div`
@@ -130,8 +127,6 @@ function subTable(data, onClick) {
   return (
     <>
       {data.map((rowData, index) => {
-        // console.log({d: rowData})
-        // console.log(Object.keys(rowData))
         return (
           <Grid>
             {Object.keys(rowData).map((columnKey) =>

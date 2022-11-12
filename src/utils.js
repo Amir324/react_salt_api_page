@@ -2,13 +2,11 @@
 // filter n properties for truthy or falsy values on type T (no effect if no filter selected)
 export function genericFilter(object, filters) {
     // no filters; no effect - return true
-    console.log({object, filters})
-    // if (filters.length === 0) {
-    //     return true;
-    // }
+    if (filters.length === 0) {
+        return true;
+    }
 
     return filters.every((filter) => {
-        // return filter.isTruthyPicked ? object[filter.property] : !object[filter.property];
         return filter.isTruthyPicked ? object[filter.property] : true;
     });
 }
@@ -21,13 +19,12 @@ export function genericSearch(
     query
 ){
 
-    // if (query === "") {
-    //     return true;
-    // }
+    if (query === "") {
+        return true;
+    }
 
     return properties.some((property) => {
         const value = object[property];
-        console.log({value})
         if (typeof value === "string" || typeof value === "number") {
             return value.toString().toLowerCase().includes(query.toLowerCase());
         }

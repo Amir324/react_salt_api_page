@@ -1,16 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Box, Divider } from "./common";
+import {Box, Divider, Row} from "./common";
 import { BoxShadow } from "./Table.component";
 
 const Wrapper = styled(BoxShadow)`
   padding-left: 20px;
   padding-top: 30px;
-`;
-
-export const Row = styled(Box)`
-  display: flex;
-  align-items: center;
 `;
 
 const Method = styled.span`

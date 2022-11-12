@@ -50,3 +50,43 @@ export const Tab = styled.div`
   border-color: ${props => props.active ? props.theme.primary : "transparent"  };
   cursor: pointer;
 `
+
+export const Row = styled(Box)`
+  display: flex;
+  align-items: center;
+`;
+
+export const Input = styled.input`
+  height: 40px;
+  outline: none;
+  border: none;
+  flex-grow: 1;
+`;
+
+
+export const Button = styled.button`
+  height: 50px;
+  min-width: 200px;
+  padding: 20px;
+  background-color: ${(props) => props.theme.primary};
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const VerticalDivider = styled.hr`
+  flex-shrink: 0;
+  border-width: 0px thin 0px 0px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.12);
+  height: auto;
+  align-self: stretch;
+  margin: 8px 0px;
+`;
+
+export const LinkButton = styled.a`
+  all: unset;
+  color: ${(props) => props.theme.primary};
+  cursor: pointer;
+`
