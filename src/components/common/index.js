@@ -13,7 +13,6 @@ export const Divider = styled.div`
 `;
 
 export const BaseBadge = styled.span`
-  height: 10px;
   width: 80px;
   height: 20px;
   font-size: 10px;
@@ -93,4 +92,32 @@ export const LinkButton = styled.a`
   all: unset;
   color: ${(props) => props.theme.primary};
   cursor: pointer;
+`;
+
+export const BaseGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 100px 1fr 200px;
+  grid-template-rows: auto;
+`;
+
+export const Grid = styled(BaseGrid)`
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  background-color: white;
+  height: 70px;
+  margin-top: 10px;
+  align-items: center;
+`;
+
+export const ColumnHeader = styled(BaseGrid)`
+  height: 30px;
+  background-color: white;
+  align-items: center;
+  padding: 50px 20px 20px 20px; 
+`;
+
+export const BoxShadow = styled(Box)`
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  background-color: white;
 `;

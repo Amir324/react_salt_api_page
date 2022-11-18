@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import HeaderComponent from "../components/Header.component";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import SearchBarComponent from "../components/SearchBar.component";
+import HeaderComponent from "../components/Header/Header.component";
+import { ThemeProvider } from "styled-components";
+import SearchBarComponent from "../components/Searchbar/SearchBar.component";
 import { Box, Row, Tab } from "../components/common";
-import TableComponent from "../components/Table.component";
+import TableComponent from "../components/Table/Table.component";
 import dataJson from "../fe_data.json";
 import { genericFilter, genericSearch } from "../utils";
 import { GlobalStyle, theme } from "../globalstyle";
+import {COLUMNS} from "../components/Table/tableColumns.constant";
 
 const TabEnum = {
   request: "request",
@@ -127,7 +128,7 @@ const MainPage = () => {
         />
       </Box>
       <Box mt={"30px"} mb={"30px"} ml={"15px"} mr={"15px"}>
-        <TableComponent data={data} onClick={onBadgeClick} />
+        <TableComponent data={data} onClick={onBadgeClick} columns={COLUMNS} />
       </Box>
     </ThemeProvider>
   );

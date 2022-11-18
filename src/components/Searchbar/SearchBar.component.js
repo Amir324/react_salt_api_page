@@ -1,7 +1,6 @@
 import React from "react";
-import { Box, Button, Input, LinkButton, Row, VerticalDivider } from "./common";
+import {Box, BoxShadow, Button, Input, LinkButton, Row, VerticalDivider} from "../common";
 import { FaSearch } from "react-icons/fa";
-import { BoxShadow } from "./Table.component";
 
 const SearchBarComponent = ({
   search,
